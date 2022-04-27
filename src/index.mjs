@@ -1,4 +1,8 @@
 import express from "express";
+import { authMiddleware } from "./middleware/authorization.mjs";
+import { getTaskControllers,postTaskControllers,putTaskControllers,deleteTaskControllers} from "./controllers/tasksControllers.mjs"
+import { postUserController } from "./controllers/usersControllers.mjs";
+import { requestLog } from "./middleware/requestLog.mjs";
 const app = express();
 const PORT = 3000;
 
@@ -12,7 +16,7 @@ const tasks=[
 
     {
         id:1,
-        description:"Comprar tostadas",
+        description:"Comprar galletas",
         done:false
 
     },
@@ -33,40 +37,35 @@ const tasks=[
 
 ]
 
-app.use(express.json())
+
+app.use(express.json());
+
+try {
+    const jsonParser = express.json();
+    app.use(requestLog);
+
+ app.post("/api/v0./task/",authMiddleware,postUserController);
 
 //Mostrar tareas
-    app.get("/api/v0.0/tasks/",(request, response)=>{
-    response.json(tasks)
-})
+ app.get("/api/v0./task/",authMiddleware, getTaskControllers);
+   
 //Añadir tareas
-    app.post("/api/v0.0/task/",(request, response)=>{
-    tasks.push(request.body);
-    response.sendStatus(201);
-})
+ app.post("/api/v0.0/task/",authMiddleware,jsonParser,postTaskControllers);
+    
 
 //Modificar tarea
-    app.put("/api/v0.0/task/",(request, response)=>{
-    const updatedTask = request.body;
-    const oldTaskIdx = tasks.findIndex(
-        item => item.id === updatedTask.id
-    )
-    tasks[oldTaskIdx] = updatedTask;
-    response.sendStatus(200);
-})
+   app.put("/api/v0.0/task/",authMiddleware,jsonParser, putTaskControllers);
+
 // Eliminar tarea
-    app.delete("/api/v0.0/task/",(request, response)=>{
-    const updatedTask = request.body;
-    const oldTaskIdx = tasks.findIndex(
-        item => item.id === updatedTask.id
-    )
-    tasks.splice(oldTaskIdx,1);
-    response.sendStatus(200)
-})
+   app.delete("/api/v0.0/task/",authMiddleware,jsonParser,deleteTaskControllers);
 
-
+    
 
 
 app.listen(PORT,()=>{
     console.log("Express running...");
 })
+
+} catch (err) {
+    console.error(err);
+}
