@@ -46,25 +46,25 @@ try {
     app.use(requestLog);
  // Usuarios
  app.get("/api/v0.0/users/",jsonParser,getUserController);
- app.post("/api/v0.0/users/",jsonParser,postUserController);
- app.put("/api/v0.0/users/",jsonParser,putUserController);
- app.delete("/api/v0.0/users/",jsonParser,deleteUserController);
+ app.post("/api/v0.0/users/",jsonParser,validateUserJSON, postUserController);
+ app.put("/api/v0.0/users/",jsonParser,validateUserJSON, putUserController);
+ app.delete("/api/v0.0/users/",jsonParser,validateUserJSON, deleteUserController);
 
 //Mostrar tareas
  app.get("/api/v0.0/task/",authMiddleware, getTaskControllers);
 
    
 //Añadir tareas
- app.post("/api/v0.0/task/",authMiddleware,jsonParser,postTaskControllers);
+ app.post("/api/v0.0/task/",authMiddleware,jsonParser,validateNewTaskJSON, postTaskControllers);
 
     
 
 //Modificar tarea
-   app.put("/api/v0.0/task/",authMiddleware,jsonParser, putTaskControllers);
+   app.put("/api/v0.0/task/",authMiddleware,jsonParser,validateTaskJSON, putTaskControllers);
 
 
 // Eliminar tarea
-   app.delete("/api/v0.0/task/",authMiddleware,jsonParser,deleteTaskControllers);
+   app.delete("/api/v0.0/task/",authMiddleware,jsonParser,validateDeleteTaskJSON, deleteTaskControllers);
    
 
 
