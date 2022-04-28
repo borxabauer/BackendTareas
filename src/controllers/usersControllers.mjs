@@ -11,20 +11,20 @@ export function postUserController (request, response) {
 }
 
 export function putUserController (request,response){
-    const updatedTask = request.body;
-    const oldTaskIdx = tasks.findIndex(
-        item => item.id === updatedTask.id
+    const updatedUser = request.body;
+    const oldUserIdx = users.findIndex(
+        item => item.id === updatedUser.id
     )
-    tasks[oldTaskIdx] = updatedTask;
+    users[oldUserIdx] = updatedUser;
     response.sendStatus(200);
 }
 
 export function deleteUserController(request,response){
 
-    const updatedTask = request.body;
-    const oldTaskIdx = tasks.findIndex(
-        item => item.id === updatedTask.id
+    const updatedUser = request.body;
+    const oldUserIdx = users.findIndex(
+        item => item.id === updatedUser.id
     )
-    tasks.splice(oldTaskIdx,1);
+    users.splice(oldUserIdx,1);
     response.sendStatus(200);
 }

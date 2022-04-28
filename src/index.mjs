@@ -3,7 +3,7 @@ import { authMiddleware } from "./middleware/authorization.mjs";
 import { getTaskControllers,postTaskControllers,putTaskControllers,deleteTaskControllers} from "./controllers/tasksControllers.mjs"
 import { postUserController,getUserController,putUserController,deleteUserController } from "./controllers/usersControllers.mjs";
 import { requestLog } from "./middleware/requestLog.mjs";
-
+import { validateDeleteTaskJSON,validateNewTaskJSON,validateUserJSON,validateTaskJSON } from "./middleware/jsonValidator.mjs";
 const app = express();
 const PORT = 3000;
 
@@ -44,7 +44,7 @@ app.use(express.json());
 try {
     const jsonParser = express.json();
     app.use(requestLog);
- 
+ // Usuarios
  app.get("/api/v0.0/users/",jsonParser,getUserController);
  app.post("/api/v0.0/users/",jsonParser,postUserController);
  app.put("/api/v0.0/users/",jsonParser,putUserController);
