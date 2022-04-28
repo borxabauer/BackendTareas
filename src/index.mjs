@@ -1,7 +1,7 @@
 import express from "express";
 import { authMiddleware } from "./middleware/authorization.mjs";
 import { getTaskControllers,postTaskControllers,putTaskControllers,deleteTaskControllers} from "./controllers/tasksControllers.mjs"
-import { postUserController,getUserController } from "./controllers/usersControllers.mjs";
+import { postUserController,getUserController,putUserController,deleteUserController } from "./controllers/usersControllers.mjs";
 import { requestLog } from "./middleware/requestLog.mjs";
 
 const app = express();
@@ -47,7 +47,8 @@ try {
  
  app.get("/api/v0.0/users/",jsonParser,getUserController);
  app.post("/api/v0.0/users/",jsonParser,postUserController);
-
+ app.put("/api/v0.0/users/",jsonParser,putUserController);
+ app.delete("/api/v0.0/users/",jsonParser,deleteUserController);
 
 //Mostrar tareas
  app.get("/api/v0.0/task/",authMiddleware, getTaskControllers);
