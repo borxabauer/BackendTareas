@@ -1,8 +1,9 @@
 import express from "express";
 import { authMiddleware } from "./middleware/authorization.mjs";
 import { getTaskControllers,postTaskControllers,putTaskControllers,deleteTaskControllers} from "./controllers/tasksControllers.mjs"
-import { postUserController } from "./controllers/usersControllers.mjs";
+import { postUserController,getUserController } from "./controllers/usersControllers.mjs";
 import { requestLog } from "./middleware/requestLog.mjs";
+
 const app = express();
 const PORT = 3000;
 
@@ -43,21 +44,28 @@ app.use(express.json());
 try {
     const jsonParser = express.json();
     app.use(requestLog);
+ 
+ app.get("/api/v0.0/users/",jsonParser,getUserController);
+ app.post("/api/v0.0/users/",jsonParser,postUserController);
 
- app.post("/api/v0./task/",authMiddleware,postUserController);
 
 //Mostrar tareas
- app.get("/api/v0./task/",authMiddleware, getTaskControllers);
+ app.get("/api/v0.0/task/",authMiddleware, getTaskControllers);
+
    
 //Añadir tareas
  app.post("/api/v0.0/task/",authMiddleware,jsonParser,postTaskControllers);
+
     
 
 //Modificar tarea
    app.put("/api/v0.0/task/",authMiddleware,jsonParser, putTaskControllers);
 
+
 // Eliminar tarea
    app.delete("/api/v0.0/task/",authMiddleware,jsonParser,deleteTaskControllers);
+   
+
 
     
 
