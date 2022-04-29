@@ -1,6 +1,6 @@
 import express from "express";
 import { authMiddleware } from "./middleware/authorization.mjs";
-import { getTaskControllers,postTaskControllers,putTaskControllers,deleteTaskControllers} from "./controllers/tasksControllers.mjs"
+import { getAllTaskControllers,getOneTaskControllers, postTaskControllers,putTaskControllers,deleteTaskControllers} from "./controllers/tasksControllers.mjs"
 import { postUserController,getUserController,putUserController,deleteUserController } from "./controllers/usersControllers.mjs";
 import { requestLog } from "./middleware/requestLog.mjs";
 import { validateDeleteTaskJSON,validateNewTaskJSON,validateUserJSON,validateTaskJSON } from "./middleware/jsonValidator.mjs";
@@ -50,8 +50,11 @@ try {
  app.put("/api/v0.0/users/",jsonParser,validateUserJSON, putUserController);
  app.delete("/api/v0.0/users/",jsonParser,validateUserJSON, deleteUserController);
 
+//:id=parametro=pedir una tarea especifica dentro de la ruta de que tenga ese id
+app.get("/api/v0.0/task/:id",authMiddleware,getOneTaskControllers);
+
 //Mostrar tareas
- app.get("/api/v0.0/task/",authMiddleware, getTaskControllers);
+ app.get("/api/v0.0/task/",authMiddleware, getAllTaskControllers);
 
    
 //Añadir tareas

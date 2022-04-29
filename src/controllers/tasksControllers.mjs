@@ -1,9 +1,24 @@
 
+import { response } from "express";
 import { tasks } from "../models/tasksModels.mjs"
 
 
+
+export function getOneTaskControllers (request,response)
+try{
+  const task=task.find(
+    item=>item.id ===parseInt(request.param.id)
+  )
+  if(task) response.json(task)
+  else response.sendStatus(404);
+} catch (err) {
+  response.sendStatus(400)
+}
+  
+
+
 //Mostrar tareas
- export function getTaskControllers(request, response){
+ export function getAllTaskControllers(request, response){
     response.json(tasks)
 };
 
