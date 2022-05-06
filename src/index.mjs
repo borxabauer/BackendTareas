@@ -7,36 +7,6 @@ import { validateDeleteTaskJSON,validateNewTaskJSON,validateUserJSON,validateTas
 const app = express();
 const PORT = 3000;
 
-const tasks=[
-    {
-        id:0,
-        description:"Comprar pan",
-        done:false
-
-    },
-
-    {
-        id:1,
-        description:"Comprar galletas",
-        done:false
-
-    },
-
-    {
-        id:2,
-        description:"Comprar pescado",
-        done:false
-    },
-
-    {
-
-        id:3,
-        description:"Comprar carne",
-        done:false
-    }
-    
-
-]
 
 
 app.use(express.json());
@@ -54,7 +24,7 @@ try {
 app.get("/api/v0.0/task/:id",authMiddleware,getOneTaskControllers);
 
 //Mostrar tareas
- app.get("/api/v0.0/task/",authMiddleware, getAllTaskControllers);
+ app.get("/api/v0.0/tasks/",authMiddleware, getAllTaskControllers);
 
    
 //Añadir tareas

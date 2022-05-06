@@ -1,63 +1,81 @@
 
-import { response } from "express";
 import { tasks } from "../models/tasksModels.mjs"
+import db from "../models/db.mjs";
 
-
-
-export function getOneTaskControllers (request,response)
-try{
-  const task=task.find(
-    item=>item.id ===parseInt(request.param.id)
+//Mostrar una tarea
+export function getOneTaskControllers (request,response){
+  db.all (
+    `SELECT id, description, done FROM tasks`,
+    (err, data) => {
+        if (err) {
+            console.error(err);
+            response.sendStatus(500)
+        } else {
+            response.json(data)
+        }
+    }
   )
-  if(task) response.json(task)
-  else response.sendStatus(404);
-} catch (err) {
-  response.sendStatus(400)
-}
-  
+  }
+     
+
 
 
 //Mostrar tareas
  export function getAllTaskControllers(request, response){
-    response.json(tasks)
-};
+  db.all (
+  `SELECT id, description, done FROM tasks`,
+  (err, data) => {
+      if (err) {
+          console.error(err);
+          response.sendStatus(500)
+      } else {
+          response.json(data)
+      }
+  }
+)
+}
+   
 
 //Añadir tareas
   export function postTaskControllers (request, response){
-    try{
-    tasks.push(request.body);
-    response.sendStatus(201);
-    } catch (err){
-      console.error(err);
-      response.sendStatus(500);
-    }
-};
-
+    const { description, done } = request.body;
+    db.run(
+        `INSERT INTO tasks(description, done) VALUES ("${description}", ${done})`,
+        (err) => {
+            if (err) {
+                console.error(err);
+                response.sendStatus(500)
+            } else {
+                response.sendStatus(201)
+            }
+        }
+    )
+}
 // Funcion Modificar tarea
   export function putTaskControllers(request, response){
-    try{
-    const updatedTask = request.body;
-    const oldTaskIdx = tasks.findIndex(
-        item => item.id === updatedTask.id
-    )
-    tasks[oldTaskIdx] = updatedTask;
-    response.sendStatus(200);
-   }catch (err){
-     console.error(err);
-     response.sendStatus(501);
-   }
-  }
+    db.run(
+      `UPDATE tasks SET description = "${request.body.description}" , done = ${request.body.done} WHERE id = "${request.body.id}"`,
+      (err) => {
+          if (err) {
+              console.error(err);
+              response.sendStatus(500)
+          } else {
+              response.sendStatus(200)
+          }
+      }
+  )
+}
 // Funcion Eliminar tarea
    export function deleteTaskControllers (request, response){
-     try{
-    const updatedTask = request.body;
-    const oldTaskIdx = tasks.findIndex(
-        item => item.id === updatedTask.id
-    )
-    tasks.splice(oldTaskIdx,1);
-    response.sendStatus(200);
-     }catch (err){
-       console.error(err);
-       response.sendStatus(500);
-     }
+    db.run(
+      `DELETE FROM tasks WHERE id =`+request.body.id,
+      (err) => {
+          if (err) {
+              console.error(err);
+              response.sendStatus(500)
+          } else {
+              response.sendStatus(200)
+          }
+      }
+  )
 }

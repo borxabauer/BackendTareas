@@ -1,10 +1,10 @@
 import sqlite3 from 'sqlite3';
 
-const db = new sqlite3.Database( (err) => {
+const db = new sqlite3.Database('./tasks.db', (err) => {
     if (err) {
         console.error(err.message);
     }
-    console.log('Connected to the chat database.');
+    console.log('Connected to the tasks.');
 });
 
 db.run(`
@@ -23,12 +23,12 @@ db.run(`
         tasks(
             id INTEGER PRIMERY KEY,
             description TEXT NOT NULL,
-            done
+            done BOOLEAN
         )
 `
 )
 
-
+/*
 export function sqlCallback (error, data) {
     console.log("error:", error, "data:", data);
     if ( error ) throw error;
@@ -87,7 +87,7 @@ export function insertTasks ( taskObject, callback) {
     db.run(sql,callback);
 }
 
-
+*/
 
 
 export default db;
